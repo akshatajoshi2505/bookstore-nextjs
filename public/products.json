@@ -1,0 +1,37 @@
+[
+    {
+        "id": "1",
+        "name": "Alices adventures in wonderland",
+        "price": 8,
+        "description": "Alice's Adventures in Wonderland is an 1865 novel written by English author Charles Lutwidge Dodgson under the pseudonym Lewis Carroll. It tells of a girl named Alice falling through a rabbit hole into a fantasy world populated by peculiar, anthropomorphic creatures. The tale plays with logic, giving the story lasting popularity with adults as well as with children. It is considered to be one of the best examples of the literary nonsense genre. Its narrative course and structure, characters and imagery have been enormously influential in both popular culture and literature, especially in the fantasy genre.",
+        "imageUrl": "/images/alices-adventures-in-wonderlandr.jpg"
+    },
+    {
+        "id": "2",
+        "name": "The world of Ice and Fire by R.R Martin",
+        "price": 11,
+        "description": "This lavishly illustrated volume isa comprehensive history of the Seven Kingdoms, providing vividly constructed accounts of the epic battles, bitter rivalries, and daring rebellions that lead to the events of A Song of Ice and Fire and HBO’s Game of Thrones. In a collaboration that’s been years in the making, Martin has teamed with Elio M. García, Jr., and Linda Antonsson, the founders of the renowned fan site Westeros.org—perhaps the only people who know this world almost as well as its visionary creator.",
+        "imageUrl": "/images/GOT_ice_and_fire.jpg"
+    },
+    {
+        "id": "3",
+        "name": "A Knight of the Seven Kingdoms by R.R Martin",
+        "price": 12,
+        "description": "These never-before-collected adventures recount an age when the Targaryen line still holds the Iron Throne, and the memory of the last dragon has not yet passed from living consciousness. Before Tyrion Lannister and Podrick Payne, there was Dunk and Egg. A young, naïve but ultimately courageous hedge knight, Ser Duncan the Tall towers above his rivals—in stature if not experience. Tagging along is his diminutive squire, a boy called Egg—whose true name is hidden from all he and Dunk encounter. Though more improbable heroes may not be found in all of Westeros, great destinies lay ahead for these two . . . as do powerful foes, royal intrigue, and outrageous exploits.",
+        "imageUrl": "/images/knight_of_7_kingdom.jpg"
+    },
+    {
+        "id": "4",
+        "name": "The Rise of the Dragon by R.R Martin",
+        "price": 15,
+        "description": "For hundreds of years, the Targaryens sat the Iron Throne of Westeros while their dragons ruled the skies. The story of the only family of dragonlords to survive Valyria’s Doom is a tale of twisty politics, alliances and betrayals, and acts both noble and craven. The Rise of the Dragon chronicles the creation and rise of Targaryen power in Westeros, covering the history first told in George R. R. Martin’s epic Fire & Blood, from Aegon Targaryen’s conquest of Westeros through to the infamous Dance of the Dragons—the bloody civil war that nearly undid Targaryen rule for good.",
+        "imageUrl": "/images/rise_of_dragon.jpg"
+    },
+    {
+        "id": "5",
+        "name": "Sleeping beauty",
+        "price": 12,
+        "description": "With the help of three good fairies, Princess Aurora grows up safe and protected from the evil Maleficent. But everything changes when she meets Prince Phillip and falls in love. Disney Princess fans ages 2 to 5 will love this Little Golden Book retelling of Disney Sleeping Beauty!",
+        "imageUrl": "/images/sleeping_beauty_1.jpg"
+    }
+]

@@ -17,7 +17,8 @@ const Header: React.FC = () => {
             <nav>
                 <ul className="flex space-x-4">
                     <li><Link href="/">Home</Link></li>
-                    <li><Link href="/product/1/">Product</Link></li>
+                    <li><Link href="/orders" className="mr-4">Orders</Link></li>
+                    <li><Link href="/products">Product</Link></li>
                     <li>
                         <Link href="/cart">
                             <div className="relative">
