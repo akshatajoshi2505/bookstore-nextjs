@@ -1,21 +1,18 @@
-import Form from '@/app/ui/invoices/create-form';
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
-import { fetchCustomers } from '@/app/lib/data';
+import Form from '@/app/ui/subscriptions/edit-form';
+import Breadcrumbs from '@/app/ui/subscriptions/breadcrumbs';
+// import { fetchCustomers } from '@/app/lib/data';
  
-export default async function Page({ params }: { params: { id: string } }) {
-    const id = params.id;
-    // const [invoice, customers] = await Promise.all([
-    //     fetchInvoiceById(id),
-    //     fetchCustomers(),
-    //   ]);
+export default async function Page() {
+//   const customers = await fetchCustomers();
+ 
   return (
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Invoices', href: '/dashboard/invoices' },
+          { label: 'Subscriptions', href: '/dashboard/subscriptions' },
           {
-            label: 'Edit Invoice',
-            href: `/dashboard/invoices/${id}/edit`,
+            label: 'Edit Subscription',
+            href: '/dashboard/invoices/edit',
             active: true,
           },
         ]}
