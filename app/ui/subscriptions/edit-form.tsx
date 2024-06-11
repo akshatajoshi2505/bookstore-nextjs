@@ -7,14 +7,68 @@ import {
   UserCircleIcon,DocumentTextIcon
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
+import { createSubscription } from '@/app/lib/actions';
 
 export default function Form() {
   return (
-    <form>
+    <form action={createSubscription}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        
+      <div className="mb-4">
+          <label htmlFor="title" className="mb-2 block text-sm font-medium">
+            Title
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="title"
+                name="title"
+                type="text"
+                placeholder="Enter title"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              />
+              <DocumentTextIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
         {/* Customer Name */}
         <div className="mb-4">
+          <label htmlFor="amount" className="mb-2 block text-sm font-medium">
+            Duration in months
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="duration"
+                name="duration"
+                type="number"
+                placeholder="Enter duration"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              />
+              <ClockIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
+
+        {/* Invoice Amount */}
+        <div className="mb-4">
+          <label htmlFor="amount" className="mb-2 block text-sm font-medium">
+            Price
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="amount"
+                name="amount"
+                type="number"
+                step="0.01"
+                placeholder="Enter amount"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              />
+              <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+          </div>
+        </div>
+        {/* <div className="mb-4">
           <label htmlFor="customer" className="mb-2 block text-sm font-medium">
             Choose customer
           </label>
@@ -26,48 +80,29 @@ export default function Form() {
               defaultValue=""
             >
               <option value="" disabled>
-                Select a customer
+                Select a status
               </option>
+              <option value="Active">Active</option>
+              <option value="Inctive">Inctive</option>
               {/* {customers.map((customer) => (
                 <option key={customer.id} value={customer.id}>
                   {customer.name}
                 </option>
               ))} */}
-            </select>
+            {/* </select>
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
-        </div>
-
-        {/* Invoice Amount */}
-        <div className="mb-4">
-          <label htmlFor="amount" className="mb-2 block text-sm font-medium">
-            Choose an amount
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <div className="relative">
-              <input
-                id="amount"
-                name="amount"
-                type="number"
-                step="0.01"
-                placeholder="Enter USD amount"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              />
-              <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-            </div>
-          </div>
-        </div>
-
+        </div> */} 
         {/* Invoice Status */}
         <fieldset>
           <legend className="mb-2 block text-sm font-medium">
-            Set the invoice status
+            Set the status
           </legend>
           <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
             <div className="flex gap-4">
               <div className="flex items-center">
                 <input
-                  id="pending"
+                  id="status"
                   name="status"
                   type="radio"
                   value="pending"
@@ -82,7 +117,7 @@ export default function Form() {
               </div>
               <div className="flex items-center">
                 <input
-                  id="paid"
+                  id="active"
                   name="status"
                   type="radio"
                   value="paid"
@@ -92,7 +127,7 @@ export default function Form() {
                   htmlFor="paid"
                   className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
                 >
-                  Paid <CheckIcon className="h-4 w-4" />
+                  Active <CheckIcon className="h-4 w-4" />
                 </label>
               </div>
             </div>
@@ -101,12 +136,12 @@ export default function Form() {
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href="/dashboard/invoices"
+          href="/dashboard/subscriptions"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Cancel
         </Link>
-        <Button type="submit">Create Invoice</Button>
+        <Button type="submit">Update Subscription</Button>
       </div>
     </form>
   );

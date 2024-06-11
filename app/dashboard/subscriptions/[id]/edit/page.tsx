@@ -1,0 +1,23 @@
+import Form from '@/app/ui/subscriptions/edit-form';
+import Breadcrumbs from '@/app/ui/subscriptions/breadcrumbs';
+// import { fetchCustomers } from '@/app/lib/data';
+ 
+export default async function Page() {
+//   const customers = await fetchCustomers();
+ 
+  return (
+    <main>
+      <Breadcrumbs
+        breadcrumbs={[
+          { label: 'Subscriptions', href: '/dashboard/subscriptions' },
+          {
+            label: 'Edit Subscription',
+            href: '/dashboard/invoices/edit',
+            active: true,
+          },
+        ]}
+      />
+      <Form  />
+    </main>
+  );
+}
