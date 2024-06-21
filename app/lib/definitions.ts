@@ -92,3 +92,18 @@ export type InvoiceForm = {
   amount: number;
   status: 'pending' | 'paid';
 };
+
+export type Book = {
+  _id: string;
+  name: string;
+  description: String,
+  price: Number,
+  imageUrl: String
+}
+
+export type Category = {
+  _id: string;
+  name: string;
+  books: Book[];
+}
+

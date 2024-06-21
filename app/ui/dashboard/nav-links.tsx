@@ -22,7 +22,8 @@ const links = [
   },
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
   {name: 'Subscriptions', href: '/dashboard/subscriptions', icon: RocketLaunchIcon},
-  {name:'Books' ,href:'/dashboard/Books', icon:BookOpenIcon}
+  {name:'Books' ,href:'/dashboard/Books', icon:BookOpenIcon},
+  {name:'Categories' ,href:'/dashboard/categories', icon:BookOpenIcon}
 ];
 
 export default function NavLinks() {

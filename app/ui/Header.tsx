@@ -20,6 +20,7 @@ const Header: React.FC = () => {
                     <li><Link href="/dashboard">Dashboard</Link></li>
                     <li><Link href="/orders" className="mr-4">Orders</Link></li>
                     <li><Link href="/products">Product</Link></li>
+                    <li><Link href="/category">Category</Link></li>
                     <li>
                         <Link href="/cart">
                             <div className="relative">
