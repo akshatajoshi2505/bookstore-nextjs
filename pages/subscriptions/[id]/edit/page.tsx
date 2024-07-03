@@ -22,7 +22,7 @@ const SubscriptionsEdit = () => {
         }
         const subscriptionData = await res.json();
         setSubscription(subscriptionData);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error fetching subscription:', error.message);
       } finally {
         setIsLoading(false); // Set loading state to false regardless of success or failure
