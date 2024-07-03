@@ -16,9 +16,9 @@ const AddCustomerPage = () => {
                 body: JSON.stringify({ name, email }),
             });
             const data = await response.json();
-            if (data.success) {
-                router.push('/dashboard/customers');
-            }
+            // if (data.success) {
+            //     router.push('/dashboard/customers');
+            // }
         } catch (error) {
             console.error('Failed to add customer', error);
         }
