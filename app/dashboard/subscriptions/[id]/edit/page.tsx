@@ -33,7 +33,7 @@ const SubscriptionsEdit = () => {
         console.log(subscriptionData.data);
         setSubscription(subscriptionData.data);
       } catch (error: any) {
-        console.error('Error fetching subscription:', error.message);
+        console.error('Error fetching subscription:', error.message );
       } finally {
         setIsLoading(false); // Set loading state to false regardless of success or failure
       }
