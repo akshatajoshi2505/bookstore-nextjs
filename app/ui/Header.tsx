@@ -5,6 +5,7 @@ import { useCart } from '@/app/lib/CartContext'; // Adjust import path if needed
 import Link from 'next/link';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import NovelNestLogo from '@/app/ui/NovelNestLogo';
+import * as actions from '@/app/actions';
 
 const Header: React.FC = () => {
     const { cart } = useCart();
@@ -21,6 +22,17 @@ const Header: React.FC = () => {
                     <li><Link href="/orders" className="mr-4">Orders</Link></li>
                     <li><Link href="/products">Product</Link></li>
                     <li><Link href="/category">Category</Link></li>
+                    <li>
+                        <form action={actions.signOut}>
+                            <button type='submit'>Sign Out</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form action={actions.signIn}>
+                            <button type='submit'>Sign In </button>
+                        </form>
+                    </li>
+
                     <li>
                         <Link href="/cart">
                             <div className="relative">

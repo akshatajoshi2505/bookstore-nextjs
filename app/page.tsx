@@ -1,13 +1,15 @@
 
 import React from 'react';
 
+import { auth } from '@/app/auth';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { lusitana } from '@/app/ui/fonts';
 import Image from 'next/image';
 
 
-const HomePage: React.FC = () => {
+const HomePage: React.FC = async () => {
+  const session = await auth();
   return (
       <main className="flex min-h-screen flex-col p-6">
         <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
@@ -23,7 +25,11 @@ const HomePage: React.FC = () => {
               href="/login"
               className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
             >
-              <span>Log in</span> <ArrowRightIcon className="w-5 md:w-6" />
+              {session?.user ? (
+                  <><span>Log in {JSON.stringify(session.user)}</span><ArrowRightIcon className="w-5 md:w-6" /></>
+                ) : (
+                  <div>Signed Out</div>
+              )}
             </Link>
           </div>
           <div className="flex items-center justify-center p-6 md:w-3/5 md:py-12">

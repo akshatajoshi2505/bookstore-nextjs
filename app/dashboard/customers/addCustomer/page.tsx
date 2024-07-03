@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 const AddCustomerPage = () => {
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
-    const router = useRouter();
 
     const handleAddCustomer = async () => {
         try {
