@@ -9,7 +9,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import { BookOpenIcon } from '@heroicons/react/24/outline';
+import { BookOpenIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
@@ -23,7 +23,8 @@ const links = [
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
   {name: 'Subscriptions', href: '/dashboard/subscriptions', icon: RocketLaunchIcon},
   {name:'Books' ,href:'/dashboard/Books', icon:BookOpenIcon},
-  {name:'Categories' ,href:'/dashboard/categories', icon:BookOpenIcon}
+  {name:'Categories' ,href:'/dashboard/categories', icon:BookOpenIcon},
+  {name:'Orders' ,href:'/dashboard/orders', icon:ShoppingBagIcon}
 ];
 
 export default function NavLinks() {

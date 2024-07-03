@@ -13,14 +13,14 @@ const CartPage = () => {
     };
 
     const handleIncreaseQty = (productId: string) => {
-        const product = cart.find((p) => p.id === productId);
+        const product = cart.find((p) => p._id === productId);
         if (product) {
             updateQty(productId, (product.qty || 1) + 1);
         }
     };
 
     const handleDecreaseQty = (productId: string) => {
-        const product = cart.find((p) => p.id === productId);
+        const product = cart.find((p) => p._id === productId);
         if (product && product.qty && product.qty > 1) {
             updateQty(productId, product.qty - 1);
         }
@@ -38,14 +38,14 @@ const CartPage = () => {
             ) : (
                 <div className="grid gap-6">
                     {cart.map((product) => (
-                        <div key={product.id} className="flex items-center border p-4 rounded">
-                            <Image src={product.imageUrl} alt={product.name} width={100} height={100} />
+                        <div key={product._id} className="flex items-center border p-4 rounded">
+                            <Image src={'/images' + (product.imageURL || '/No-image.jpg')} alt={product.title} width={100} height={100} />
                             <div className="ml-4">
-                                <h2 className="text-xl">{product.name}</h2>
+                                <h2 className="text-xl">{product.title}</h2>
                                 <p>Price: ${product.price}</p>
                                 <div className="flex items-center">
                                     <button
-                                        onClick={() => handleDecreaseQty(product.id)}
+                                        onClick={() => handleDecreaseQty(product._id)}
                                         className="bg-gray-300 text-gray-800 py-1 px-3 rounded-l"
                                     >-</button>
                                     <input
@@ -55,12 +55,12 @@ const CartPage = () => {
                                         className="border py-1 px-4 text-center w-16"
                                     />
                                     <button
-                                        onClick={() => handleIncreaseQty(product.id)}
+                                        onClick={() => handleIncreaseQty(product._id)}
                                         className="bg-gray-300 text-gray-800 py-1 px-3 rounded-r"
                                     >+</button>
                                 </div>
                                 <button
-                                    onClick={() => handleRemoveItem(product.id)}
+                                    onClick={() => handleRemoveItem(product._id)}
                                     className="mt-2 bg-red-500 text-white py-1 px-3 rounded"
                                 >
                                     Remove

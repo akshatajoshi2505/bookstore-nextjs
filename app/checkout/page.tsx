@@ -23,10 +23,10 @@ const CheckoutPage = () => {
             ) : (
                 <div className="grid gap-6 m-auto">
                     {cart.map((product) => (
-                        <div key={product.id} className="flex items-center border p-4 rounded">
-                            <Image src={product.imageUrl} alt={product.name} width={100} height={100} />
+                        <div key={product._id} className="flex items-center border p-4 rounded">
+                            <Image src={'/images' + (product.imageURL || '/No-image.jpg')} alt={product.title} width={100} height={100} />
                             <div className="ml-4">
-                                <h2 className="text-xl">{product.name}</h2>
+                                <h2 className="text-xl">{product.title}</h2>
                                 <p>Price: ${product.price}</p>
                                 <p className="mt-2">Total: ${(product.price * (product.qty || 1)).toFixed(2)}</p>
                             </div>

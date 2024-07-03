@@ -1,5 +1,7 @@
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 
 export function CreateSubscription() {
   return (
@@ -24,13 +26,46 @@ export function EditSubscription({ id }: { id: string }) {
   );
 }
 
-export function DeleteSubscription({ id }: { id: string }) {
-  return (
-    <>
-      <button className="rounded-md border p-2 hover:bg-gray-100">
-        <span className="sr-only">Delete</span>
-        <TrashIcon className="w-5" />
-      </button>
-    </>
-  );
-}
+// export function DeleteSubscription({ id }: { id: string }) {
+//   // const router = useRouter();
+
+//   const handleDelete = async () => {
+//     const confirmation = window.confirm('Are you sure you want to delete this subscription?');
+//     if (!confirmation) return;
+
+//     try {
+//       const response = await fetch(`/api/subscriptions/${id}`, {
+//         method: 'DELETE',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//       });
+//       const data = await response.json();
+//       console.log(data);
+//       // if (!response.ok || !data.success) {
+//       //   throw new Error(data.message || 'Failed to delete subscription');
+//       // }
+
+//       if (!response.ok) {
+//         throw new Error('Failed to delete subscription');
+//       }
+
+//       alert('Subscription deleted successfully');
+//       // router.push("/dashboard/subscriptions");
+
+//       // Optionally, you can trigger a state update or navigation here to reflect the deletion
+//     } catch (error) {
+//       alert(error.message);
+//     }
+//   };
+
+//   return (
+//     <button
+//       onClick={handleDelete}
+//       className="rounded-md border p-2 hover:bg-gray-100"
+//     >
+//       <span className="sr-only">Delete</span>
+//       <TrashIcon className="w-5" />
+//     </button>
+//   );
+// }

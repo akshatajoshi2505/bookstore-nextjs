@@ -1,57 +1,36 @@
-
 import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
-import { useEffect, useState } from 'react';
 import { Button } from '@/app/ui/button';
-import { EditSubscription, DeleteSubscription } from '@/app/ui/subscriptions/buttons';
+import { EditSubscription } from '@/app/ui/subscriptions/buttons';
+import { useEffect, useState } from 'react';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
-import {
-  CustomersTableType,
-  FormattedCustomersTable,
-} from '@/app/lib/definitions';
-
-type Subscription = {
+interface Subscription {
   _id: string;
-  name: string;
-  description: string;
-  length: number;
+  title: string;
+  duration: string;
+  amount: string;
   status: string;
-};
-export default async function SubscriptionsTable()
-  // {
-//   customers,
-// }: {
-//   customers: FormattedCustomersTable[];
-// }) 
-{
-  // const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+}
 
-  // useEffect(() => {
-  //   const fetchSubscriptions = async () => {
-  //     try {
-  //       const res = await fetch('../api/subscriptions');
-  //       const data = await res.json();
-  //       setSubscriptions(data.subscriptions);
-  //     } catch (error) {
-  //       console.error('Error fetching subscriptions:', error);
-  //     }
-  //   };
 
-  //   fetchSubscriptions();
-  // }, []);
+interface SubscriptionsTableProps {
+  subscriptions: Subscription[];
+  onDelete: (id: string) => void;
+}
+// Assuming this is where your SubscriptionsTable component is defined
+const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({ subscriptions, onDelete }) => {
   return (
     <div className="w-full">
-
       <div className="mt-6 flow-root">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden rounded-md bg-gray-50 p-2 md:pt-0">
-              
-              <table className="hidden min-w-full rounded-md text-gray-900 md:table">
+              <table className="min-w-full rounded-md text-gray-900">
                 <thead className="rounded-md bg-gray-50 text-left text-sm font-normal">
                   <tr>
-                    <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                    <th scope="col" className="px-4 py-5 font-medium">
                       Title
                     </th>
                     <th scope="col" className="px-3 py-5 font-medium">
@@ -66,113 +45,45 @@ export default async function SubscriptionsTable()
                     <th scope="col" className="px-3 py-5 font-medium" colSpan={2}>
                       Actions
                     </th>
-                    
                   </tr>
                 </thead>
 
                 <tbody className="divide-y divide-gray-200 text-gray-900">
-                {/* {subscriptions.length === 0 ? (
-                  <tr><td colSpan={4}>No data found</td></tr>
-                ):(
-                subscriptions.map((subscription) => ( */}
-                    <tr key="1" className="group">
+                  {subscriptions.map((subscription) => (
+                    <tr key={subscription._id} className="group">
                       <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
                         <div className="flex items-center gap-3">
-                          <p>Free Version</p>
+                          <p>{subscription.title}</p>
                         </div>
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        1
+                        {subscription.duration}
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        0
+                      {subscription.amount}
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        Active
+                        {subscription.status}
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        <EditSubscription id={"1"} />
-                      
+                        <EditSubscription id={subscription._id} />
                       </td>
-                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        <DeleteSubscription id={"1"} />
-                      </td>
-                     
-                    </tr>
+                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
+                      <button onClick={() => onDelete(subscription._id)} className="rounded-md border p-2 hover:bg-gray-100">
+                        <span className="sr-only">Delete</span>
+                        <TrashIcon className="w-5" />
+                      </button>
 
-                    <tr key="1" className="group">
-                      <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
-                        <div className="flex items-center gap-3">
-                          <p>3 Months</p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        3
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        20
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        Active
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        <EditSubscription id={"1"} />
-                      
-                      </td>
-                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        <DeleteSubscription id={"1"} />
                       </td>
                     </tr>
-                    <tr key="1" className="group">
-                      <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
-                        <div className="flex items-center gap-3">
-                          <p>6 Months</p>
-                        </div>
+                  ))}
+                  {subscriptions.length === 0 && (
+                    <tr>
+                      <td colSpan={6} className="px-4 py-5 text-sm text-center">
+                        No subscriptions found
                       </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        6
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        35
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        Active
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        <EditSubscription id={"1"} />
-                      
-                      </td>
-                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        <DeleteSubscription id={"1"} />
-                      </td>
-                     
                     </tr>
-                    <tr key="1" className="group">
-                      <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
-                        <div className="flex items-center gap-3">
-                          <p>1 Year</p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        12
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        100
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        Active
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        <EditSubscription id={"1"} />
-                      
-                      </td>
-                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        <DeleteSubscription id={"1"} />
-                      </td>
-                     
-                    </tr>
-                   {/* ))
-                  )} */}
+                  )}
                 </tbody>
               </table>
             </div>
@@ -181,4 +92,6 @@ export default async function SubscriptionsTable()
       </div>
     </div>
   );
-}
+};
+
+export default SubscriptionsTable;

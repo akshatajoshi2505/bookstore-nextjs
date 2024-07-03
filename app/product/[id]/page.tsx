@@ -1,21 +1,26 @@
 'use client';
 
+import { useRouter } from 'next/router';
 import { useParams } from 'next/navigation';
 import { useCart } from '@/app/lib/CartContext';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 interface Product {
-    id: string;
-    name: string;
-    price: number;
+    _id: string;
+    title: string;
     description: string;
-    imageUrl: string;
+    author: string;
+    price: number;
+    publicationDate: string;
+    isbn: string;
+    imageURL: string;
     qty?: number;
 }
 
 const ProductPage = () => {
-    const { id } = useParams();
+    //const router = useRouter(); // Use useRouter for accessing params
+    const _id = useParams(); // Access id from router.query
     const { addToCart } = useCart();
     const [product, setProduct] = useState<Product | null>(null);
     const [quantity, setQuantity] = useState(1);
@@ -23,21 +28,25 @@ const ProductPage = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await fetch('/products.json');
-                const products: Product[] = await response.json();
-                const foundProduct = products.find((p) => p.id === id);
-                if (foundProduct) {
-                    setProduct(foundProduct);
+                console.log("_id : " + _id);
+                // Ensure id is a string before using it in the URL
+                const productId = window.location.pathname.split('/').pop();
+                console.log("product : " + productId);
+                const response = await fetch(`/api/books/${productId}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
+                const productData = await response.json();
+                setProduct(productData.data);
             } catch (error) {
                 console.error('Error fetching product data:', error);
             }
         };
 
-        if (id) {
+        if (_id) {
             fetchProduct();
         }
-    }, [id]);
+    }, [_id]);
 
     const handleAddToCart = () => {
         if (product) {
@@ -53,9 +62,9 @@ const ProductPage = () => {
             <div className="flex flex-row p-4">
                 {product && (
                     <>
-                        <Image src={product.imageUrl} alt={product.name} width={500} height={500} />
+                        <Image src={'/images' + (product.imageURL || '/No-image.jpg')} alt={product.title} width={500} height={500} />
                         <div className="flex flex-col p-24">
-                            <h2 className="text-2xl font-bold p-4">{product.name}</h2>
+                            <h2 className="text-2xl font-bold p-4">{product.title}</h2>
                             <p className="text-justify text-base p-4">{product.description}</p>
                             <p className="text-lg p-4">Price: ${product.price}</p>
                             <div className="flex items-center p-4">

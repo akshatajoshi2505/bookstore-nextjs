@@ -28,7 +28,7 @@ export async function createSubscription(formData: FormData) {
   // const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
 
-  export async function updateSubscription(id: string, formData: FormData) {
+  // export async function updateSubscription(id: string, formData: FormData) {
     // const { customerId, amount, status } = UpdateInvoice.parse({
     //   customerId: formData.get('customerId'),
     //   amount: formData.get('amount'),
@@ -43,6 +43,6 @@ export async function createSubscription(formData: FormData) {
     //   WHERE id = ${id}
     // `;
    
-    revalidatePath('/dashboard/invoices');
-    redirect('/dashboard/invoices');
-  }
+    // revalidatePath('/dashboard/invoices');
+    // redirect('/dashboard/invoices');
+  //}

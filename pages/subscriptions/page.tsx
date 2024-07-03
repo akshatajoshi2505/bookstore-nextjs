@@ -16,7 +16,7 @@ const SubscriptionsPage = () => {
         if (!res.ok) {
           throw new Error('Failed to fetch subscriptions');
         }
-        const { data: subscriptionsData } = await res.json(); // Destructure subscriptions from API response
+        const { subscriptions: subscriptionsData } = await res.json(); // Destructure subscriptions from API response
         setSubscriptions(subscriptionsData);
       } catch (error: any) {
         console.error('Error fetching subscriptions:', (error as Error).message);
@@ -25,36 +25,6 @@ const SubscriptionsPage = () => {
 
     fetchSubscriptions();
   }, []); 
-
-  const handleDelete = async (id: string) => {
-    const confirmation = window.confirm('Are you sure you want to delete this subscription?');
-    if (!confirmation) return;
-
-    try {
-      const response = await fetch(`/api/subscriptions/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete subscription');
-      }
-
-      const data = await response.json();
-
-      alert(data.message || 'Subscription deleted successfully');
-
-      // Remove the deleted subscription from the state
-      setSubscriptions((prevSubscriptions) =>
-        prevSubscriptions.filter((subscription) => subscription.id !== id)
-      );
-    } catch (error) {
-      alert((error as Error).message);
-    }
-  };
-
 
   return (
     <div className="w-full">
@@ -65,7 +35,7 @@ const SubscriptionsPage = () => {
         <Search placeholder="Search subscription..." />
         <CreateSubscription />
       </div>
-      <SubscriptionsTable subscriptions={subscriptions} onDelete={handleDelete}></SubscriptionsTable>
+      <SubscriptionsTable subscriptions={subscriptions}></SubscriptionsTable>
       <div className="mt-5 flex w-full justify-center">
         {/* <Pagination totalPages={totalPages} /> */}
       </div>

@@ -1,25 +1,18 @@
 'use client';
 
-import { useState, ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 
-// Book and Membership interfaces
+// Book interface
 interface Book {
-    id: number;
+     _id?: string; // MongoDB assigns an _id field by default
     title: string;
     author: string;
+    description: string;
     price: number;
     publicationDate: string;
     isbn: string;
-   
+    imageURL: String;
 }
-
-
-// Initial data for books and memberships
-const initialBooks: Book[] = [
-   
-    // Add more book entries as needed
-];
-
 
 // Modal component props interface
 interface ModalProps {
@@ -49,19 +42,35 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
 // AdminPage component
 const AdminPage = () => {
-    // State hooks for books and memberships
-    const [books, setBooks] = useState<Book[]>(initialBooks);
-    //const [memberships, setMemberships] = useState<Membership[]>(initialMemberships);
+    const [books, setBooks] = useState<Book[]>([]);
     const [editingBook, setEditingBook] = useState<Book | null>(null);
-    //const [editingMembership, setEditingMembership] = useState<Membership | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>("");
-
     const [isBookModalOpen, setIsBookModalOpen] = useState<boolean>(false);
-    const [isMembershipModalOpen, setIsMembershipModalOpen] = useState<boolean>(false);
 
-    // Handlers for managing books
-    const handleDeleteBook = (id: number) => {
-        setBooks(books.filter(book => book.id !== id));
+    useEffect(() => {
+        fetchBooks();
+    }, []);
+
+    const fetchBooks = async () => {
+        try {
+            const res = await fetch('/api/books');
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            const data = await res.json();
+            setBooks(data.data);
+        } catch (error) {
+            console.error('Error fetching books:', error);
+        }
+    };
+
+    const handleDeleteBook = async (id: string) => {
+        try {
+            await fetch(`/api/books/${id}`, { method: 'DELETE' });
+            fetchBooks();
+        } catch (error) {
+            console.error('Error deleting book:', error);
+        }
     };
 
     const handleEditBook = (book: Book) => {
@@ -71,29 +80,36 @@ const AdminPage = () => {
 
     const handleAddBook = () => {
         setEditingBook({
-            id: books.length + 1, // Temporary id, can be replaced with a better logic
             title: "",
+			description: "",
             author: "",
             price: 0,
             publicationDate: "",
             isbn: "",
-           
+			imageURL: "",
         });
         setIsBookModalOpen(true);
     };
 
-    const handleSaveBook = () => {
+    const handleSaveBook = async () => {
         if (editingBook) {
-            setBooks(prevBooks => {
-                const existingBook = prevBooks.find(book => book.id === editingBook.id);
-                if (existingBook) {
-                    return prevBooks.map(book => (book.id === editingBook.id ? editingBook : book));
-                } else {
-                    return [...prevBooks, editingBook];
-                }
-            });
-            setEditingBook(null);
-            setIsBookModalOpen(false);
+            const method = editingBook._id ? 'PUT' : 'POST';
+            const url = editingBook._id ? `/api/books/${editingBook._id}` : '/api/books';
+
+            try {
+                await fetch(url, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(editingBook),
+                });
+                fetchBooks();
+                setEditingBook(null);
+                setIsBookModalOpen(false);
+            } catch (error) {
+                console.error('Error saving book:', error);
+            }
         }
     };
 
@@ -104,17 +120,13 @@ const AdminPage = () => {
         }
     };
 
-    
-
-   
-
     // Handler for search functionality
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
 
     // Filtered books based on search term
-    const filteredBooks = books.filter(book => 
+    const filteredBooks = books.filter(book =>
         book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         book.author.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -152,7 +164,7 @@ const AdminPage = () => {
                     </thead>
                     <tbody>
                         {filteredBooks.map(book => (
-                            <tr key={book.id}>
+                            <tr key={book._id}>
                                 <td className="border px-4 py-2">{book.title}</td>
                                 <td className="border px-4 py-2">{book.author}</td>
                                 <td className="border px-4 py-2">${book.price}</td>
@@ -166,7 +178,7 @@ const AdminPage = () => {
                                         Edit
                                     </button>
                                     <button
-                                        onClick={() => handleDeleteBook(book.id)}
+                                        onClick={() => handleDeleteBook(book._id!)}
                                         className="bg-red-500 text-white py-1 px-2 rounded"
                                     >
                                         Delete
@@ -180,7 +192,7 @@ const AdminPage = () => {
 
             {/* Book Edit/Add Modal */}
             <Modal isOpen={isBookModalOpen} onClose={() => setIsBookModalOpen(false)}>
-                <h3 className="text-xl font-bold mb-4">{editingBook?.id ? "Edit Book" : "Add New Book"}</h3>
+                <h3 className="text-xl font-bold mb-4">{editingBook?._id ? "Edit Book" : "Add New Book"}</h3>
                 {editingBook && (
                     <form>
                         <div className="mb-4">
@@ -193,6 +205,16 @@ const AdminPage = () => {
                                 className="w-full p-2 border border-gray-300 rounded"
                             />
                         </div>
+						 <div className="mb-4">
+							<label className="block text-gray-700 mb-2">Description</label>
+							<input
+								type="text"
+								name="description"
+								value={editingBook.description}
+								onChange={handleChangeBook}
+								className="w-full p-2 border border-gray-300 rounded"
+							/>
+						</div>
                         <div className="mb-4">
                             <label className="block text-gray-700 mb-2">Author</label>
                             <input
@@ -233,7 +255,16 @@ const AdminPage = () => {
                                 className="w-full p-2 border border-gray-300 rounded"
                             />
                         </div>
-                       
+						<div className="mb-4">
+							<label className="block text-gray-700 mb-2">Upload Image</label>
+							<input
+								type="file"
+								name="imageURL"
+								accept="image/*"
+								onChange={handleChangeBook}
+								className="w-full p-2 border border-gray-300 rounded"
+							/>
+						</div>
                         <button
                             type="button"
                             onClick={handleSaveBook}
@@ -244,14 +275,8 @@ const AdminPage = () => {
                     </form>
                 )}
             </Modal>
-
-           
-
-            {/* Membership Edit Modal */}
-          
         </div>
     );
 };
 
 export default AdminPage;
-

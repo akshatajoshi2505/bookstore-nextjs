@@ -9,9 +9,11 @@ import Link from 'next/link';
     type OrderType = {
         customerName: string;
         cardNumber: string;
-        _id: number;
-        expiryDate: string,
-        cvv: string
+        _id: string;
+        expiryDate: string;
+        cvv: string;
+        orderStatus: string;
+        isPaid: boolean;
     };
 const Orders = () => {
     const [orders, setOrders] = useState<OrderType[]>([]);
@@ -38,19 +40,33 @@ const Orders = () => {
         sendGetRequest();
     }, []);
     return (
-        <div>
-            <table className="w-full border-collapse border">
-                <thead>
+        <div className="min-h-screen p-4 bg-gray-100 rounded-lg shadow-md">
+            <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
                 <tr>
-                    <th className="py-2 px-4 border">Order#</th>
-                    <th className="py-2 px-4 border">Customer Name</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Order#
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Customer Name
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Is Paid
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Order Status
+                    </th>
                 </tr>
                 </thead>
-                {orders.length > 0 ? (
+                <tbody className="bg-white divide-y divide-gray-200">
+                {orders.length > 0? (
                     orders.map((order) => <Order order={order} key={order._id.toString()} />)
                 ) : (
-                    <div> No Order Found</div>
+                    <tr>
+                        <td colSpan={4} className="text-center py-4">Loading Orders...</td>
+                    </tr>
                 )}
+                </tbody>
             </table>
         </div>
     );
@@ -59,12 +75,26 @@ const Orders = () => {
 const Order = ({ order }: PropsOrders) => {
     return (
 
-            <tbody>
-                <tr key={order._id}>
-                <td className="py-2 px-4 border">{order._id}</td>
-                <td className="py-2 px-4 border">{order.customerName}</td>
-                </tr>
-            </tbody>
+        <tr key={order._id} className="hover:bg-gray-100">
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <Link href={`/orders/${order._id}`} className="hover:text-blue-500" passHref>
+                    {order._id}
+                </Link>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.customerName}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                {order.isPaid? (
+                    <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-5 text-green-800 bg-green-100 rounded-full">
+                        Paid
+                    </span>
+                ) : (
+                    <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-5 text-red-800 bg-red-100 rounded-full">
+                        Unpaid
+                    </span>
+                )}
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.orderStatus}</td>
+        </tr>
 
     );
 };

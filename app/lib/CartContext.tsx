@@ -3,10 +3,13 @@
 import { createContext, useContext, useState } from 'react';
 
 interface Product {
-    id: string;
-    name: string;
+    _id: string;
+    title: string;
+    author: string;
     price: number;
-    imageUrl: string;
+    publicationDate: string;
+    isbn: string;
+    imageURL: string;
     qty: number;
 }
 
@@ -25,10 +28,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const addToCart = (product: Product) => {
         setCart((prevCart) => {
-            const existingProduct = prevCart.find((p) => p.id === product.id);
+            const existingProduct = prevCart.find((p) => p._id === product._id);
             if (existingProduct) {
                 return prevCart.map((p) =>
-                    p.id === product.id ? { ...p, qty: p.qty + product.qty } : p
+                    p._id === product._id ? { ...p, qty: p.qty + product.qty } : p
                 );
             }
             return [...prevCart, product];
@@ -38,13 +41,13 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const updateQty = (productId: string, qty: number) => {
         setCart((prevCart) =>
             prevCart.map((p) =>
-                p.id === productId ? { ...p, qty } : p
+                p._id === productId ? { ...p, qty } : p
             )
         );
     };
 
     const removeFromCart = (productId: string) => {
-        setCart((prevCart) => prevCart.filter((p) => p.id !== productId));
+        setCart((prevCart) => prevCart.filter((p) => p._id !== productId));
     };
 
     const clearCart = () => {

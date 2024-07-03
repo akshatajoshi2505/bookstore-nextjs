@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCart } from '@/app/lib/CartContext';
 
 const CheckoutForm = () => {
@@ -9,6 +9,7 @@ const CheckoutForm = () => {
         cvv: '',
     });
     const { cart } = useCart();
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormState((prevState) => ({...prevState, [name]: value}));
@@ -16,14 +17,21 @@ const CheckoutForm = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        // Generate the next orderNumber
+        const prefix = 'ORD'; // Your prefix
         const order = {
-            productName: '',
-            price: '',
-            quantity: '',
             customerName: formState.customerName,
             cardNumber: formState.cardNumber,
             expiryDate: formState.expiryDate,
             cvv: formState.cvv,
+            orderItems: cart.map(product => ({
+                productId: product._id, // Assuming each product has a unique _id
+                qty: product.qty,
+                price: product.price,
+                title: product.title,
+                imageURL: product.imageURL,
+            })),
         };
 
         try {
@@ -34,13 +42,13 @@ const CheckoutForm = () => {
                 },
                 body: JSON.stringify(order),
             });
-
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
             const data = await response.json();
             console.log(data);
+            // Redirect to Order Success page, passing the order ID
+            window.location.href = `/success-page/${data.orderId}`;
         } catch (error) {
             console.error('There has been a problem with your fetch operation:', error);
         }

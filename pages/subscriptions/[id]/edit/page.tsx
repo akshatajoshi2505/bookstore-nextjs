@@ -1,22 +1,13 @@
 'use client';
 import { useState, useEffect } from 'react';
- import { useRouter, useParams } from 'next/navigation'
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import Form from '@/app/ui/subscriptions/edit-form';
 import Breadcrumbs from '@/app/ui/subscriptions/breadcrumbs';
 
 const SubscriptionsEdit = () => {
   const router = useRouter();
-  
-  // const params: any = useSearchParams(); 
-  // const id = params.get("id");
-  const   params   = useParams();
-   const jsonString = JSON.stringify(params);
-   const parsedObject = JSON.parse(jsonString);
-   const id = parsedObject.id;
-   console.log(id);
-  // const { id } = router.query; // Get ID from URL query parameters
-// console.log(JSON.stringify(id));
+  const { id } = router.query; // Get ID from URL query parameters
+
   const [subscription, setSubscription] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,9 +21,8 @@ const SubscriptionsEdit = () => {
           throw new Error('Failed to fetch subscription');
         }
         const subscriptionData = await res.json();
-        console.log(subscriptionData.data);
-        setSubscription(subscriptionData.data);
-      } catch (error: any) {
+        setSubscription(subscriptionData);
+      } catch (error) {
         console.error('Error fetching subscription:', error.message);
       } finally {
         setIsLoading(false); // Set loading state to false regardless of success or failure
@@ -53,7 +43,7 @@ const SubscriptionsEdit = () => {
           { label: 'Subscriptions', href: '/dashboard/subscriptions' },
           {
             label: 'Edit Subscription',
-            href: `/dashboard/subscriptions/${id}/edit`,
+            href: `/dashboard/subscriptions/edit/${id}`,
             active: true,
           },
         ]}
@@ -61,6 +51,6 @@ const SubscriptionsEdit = () => {
       <Form subscription={subscription} />
     </main>
   );
-}; 
+};
 
 export default SubscriptionsEdit;
