@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 import { auth } from '@/app/auth';
@@ -11,19 +10,19 @@ import Image from 'next/image';
 const HomePage: React.FC = async () => {
   const session = await auth();
   return (
-      <main className="flex min-h-screen flex-col p-6">
+      <main className="flex min-h-screen flex-col p-6 bg-teal-50">
         <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
-          <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
-            <p className="text-xl text-blue-700 md:text-3xl md:leading-normal">
+          <div className="flex flex-col justify-center gap-6 rounded-lg bg-teal-700 px-6 py-10 md:w-2/5 md:px-20 text-white">
+            <p className="text-xl md:text-3xl md:leading-normal">
               <strong>Welcome to NovelNest.</strong> Dive into our world of endless stories and{' '}
-              <a href="/browse" className="text-amber-500">
+              <Link href="/products" className="text-yellow-300">
                 explore our collection
-              </a>
+              </Link>
               . Let your next adventure begin here!
             </p>
             <Link
               href="/login"
-              className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
+              className="flex items-center gap-5 self-start rounded-lg bg-teal-800 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-900 hover:text-yellow-300 md:text-base"
             >
               {session?.user ? (
                   <><span>Log in {JSON.stringify(session.user)}</span><ArrowRightIcon className="w-5 md:w-6" /></>

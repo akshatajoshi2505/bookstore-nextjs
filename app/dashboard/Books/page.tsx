@@ -11,7 +11,7 @@ interface Book {
     price: number;
     publicationDate: string;
     isbn: string;
-    imageURL: String;
+    imageURL: string;
 }
 
 // Modal component props interface
@@ -27,9 +27,9 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded shadow-lg w-1/2 relative">
+            <div className="bg-white p-6 rounded-lg shadow-xl w-1/2 relative">
                 <button
-                    className="absolute top-0 right-0 mt-4 mr-4 text-gray-500"
+                    className="absolute top-0 right-0 mt-4 mr-4 text-gray-500 hover:text-gray-800"
                     onClick={onClose}
                 >
                     &times;
@@ -81,12 +81,12 @@ const AdminPage = () => {
     const handleAddBook = () => {
         setEditingBook({
             title: "",
-			description: "",
+            description: "",
             author: "",
             price: 0,
             publicationDate: "",
             isbn: "",
-			imageURL: "",
+            imageURL: "",
         });
         setIsBookModalOpen(true);
     };
@@ -132,39 +132,39 @@ const AdminPage = () => {
     );
 
     return (
-        <div className="flex flex-col min-h-screen p-6">
+        <div className="flex flex-col min-h-screen p-6 bg-gray-50">
             {/* Books management section */}
             <main className="flex-1 mb-8">
-                <h2 className="text-2xl font-bold mb-4">Manage Books</h2>
-                <div className="mb-4 flex justify-between">
+                <h2 className="text-3xl font-bold mb-4 text-teal-700">Manage Books</h2>
+                <div className="mb-4 flex justify-between items-center">
                     <input
                         type="text"
                         placeholder="Search by title or author"
                         value={searchTerm}
                         onChange={handleSearch}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                     />
                     <button
                         onClick={handleAddBook}
-                        className="ml-4 bg-blue-500 text-white py-2 px-4 rounded"
+                        className="ml-4 bg-teal-600 text-white py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:bg-teal-700"
                     >
                         Add New Book
                     </button>
                 </div>
                 <table className="table-auto w-full border-collapse border border-gray-200 mb-4">
                     <thead>
-                        <tr>
-                            <th className="border px-4 py-2">Title</th>
-                            <th className="border px-4 py-2">Author</th>
-                            <th className="border px-4 py-2">Price</th>
-                            <th className="border px-4 py-2">Publication Date</th>
-                            <th className="border px-4 py-2">ISBN</th>
-                            <th className="border px-4 py-2">Actions</th>
+                        <tr className="bg-teal-100">
+                            <th className="border px-4 py-2 text-left text-teal-800">Title</th>
+                            <th className="border px-4 py-2 text-left text-teal-800">Author</th>
+                            <th className="border px-4 py-2 text-left text-teal-800">Price</th>
+                            <th className="border px-4 py-2 text-left text-teal-800">Publication Date</th>
+                            <th className="border px-4 py-2 text-left text-teal-800">ISBN</th>
+                            <th className="border px-4 py-2 text-left text-teal-800">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredBooks.map(book => (
-                            <tr key={book._id}>
+                            <tr key={book._id} className="bg-white hover:bg-teal-50">
                                 <td className="border px-4 py-2">{book.title}</td>
                                 <td className="border px-4 py-2">{book.author}</td>
                                 <td className="border px-4 py-2">${book.price}</td>
@@ -173,13 +173,13 @@ const AdminPage = () => {
                                 <td className="border px-4 py-2">
                                     <button
                                         onClick={() => handleEditBook(book)}
-                                        className="bg-yellow-500 text-white py-1 px-2 rounded mr-2"
+                                        className="bg-yellow-500 text-white py-2 px-4 rounded-lg shadow-sm hover:bg-yellow-600 transition-transform transform hover:scale-105 mr-2"
                                     >
                                         Edit
                                     </button>
                                     <button
                                         onClick={() => handleDeleteBook(book._id!)}
-                                        className="bg-red-500 text-white py-1 px-2 rounded"
+                                        className="bg-red-500 text-white py-2 px-4 rounded-lg shadow-sm hover:bg-red-600 transition-transform transform hover:scale-105"
                                     >
                                         Delete
                                     </button>
@@ -192,83 +192,82 @@ const AdminPage = () => {
 
             {/* Book Edit/Add Modal */}
             <Modal isOpen={isBookModalOpen} onClose={() => setIsBookModalOpen(false)}>
-                <h3 className="text-xl font-bold mb-4">{editingBook?._id ? "Edit Book" : "Add New Book"}</h3>
+                <h3 className="text-2xl font-bold mb-4 text-teal-700">{editingBook?._id ? "Edit Book" : "Add New Book"}</h3>
                 {editingBook && (
                     <form>
                         <div className="mb-4">
-                            <label className="block text-gray-700 mb-2">Title</label>
+                            <label className="block text-teal-700 mb-2">Title</label>
                             <input
                                 type="text"
                                 name="title"
                                 value={editingBook.title}
                                 onChange={handleChangeBook}
-                                className="w-full p-2 border border-gray-300 rounded"
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                             />
                         </div>
-						 <div className="mb-4">
-							<label className="block text-gray-700 mb-2">Description</label>
-							<input
-								type="text"
-								name="description"
-								value={editingBook.description}
-								onChange={handleChangeBook}
-								className="w-full p-2 border border-gray-300 rounded"
-							/>
-						</div>
+                         <div className="mb-4">
+                            <label className="block text-teal-700 mb-2">Description</label>
+                            <textarea
+                                name="description"
+                                value={editingBook.description}
+                                onChange={handleChangeBook}
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            />
+                        </div>
                         <div className="mb-4">
-                            <label className="block text-gray-700 mb-2">Author</label>
+                            <label className="block text-teal-700 mb-2">Author</label>
                             <input
                                 type="text"
                                 name="author"
                                 value={editingBook.author}
                                 onChange={handleChangeBook}
-                                className="w-full p-2 border border-gray-300 rounded"
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-gray-700 mb-2">Price</label>
+                            <label className="block text-teal-700 mb-2">Price</label>
                             <input
                                 type="number"
                                 name="price"
                                 value={editingBook.price}
                                 onChange={handleChangeBook}
-                                className="w-full p-2 border border-gray-300 rounded"
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-gray-700 mb-2">Publication Date</label>
+                            <label className="block text-teal-700 mb-2">Publication Date</label>
                             <input
                                 type="date"
                                 name="publicationDate"
                                 value={editingBook.publicationDate}
                                 onChange={handleChangeBook}
-                                className="w-full p-2 border border-gray-300 rounded"
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-gray-700 mb-2">ISBN</label>
+                            <label className="block text-teal-700 mb-2">ISBN</label>
                             <input
                                 type="text"
                                 name="isbn"
                                 value={editingBook.isbn}
                                 onChange={handleChangeBook}
-                                className="w-full p-2 border border-gray-300 rounded"
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                             />
                         </div>
-						<div className="mb-4">
-							<label className="block text-gray-700 mb-2">Upload Image</label>
-							<input
-								type="file"
-								name="imageURL"
-								accept="image/*"
-								onChange={handleChangeBook}
-								className="w-full p-2 border border-gray-300 rounded"
-							/>
-						</div>
+                        <div className="mb-4">
+                            <label className="block text-teal-700 mb-2">Upload Image</label>
+                            <input
+                                type="file"
+                                name="imageURL"
+                                accept="image/*"
+                                onChange={handleChangeBook}
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            />
+                        </div>
                         <button
                             type="button"
                             onClick={handleSaveBook}
-                            className="bg-green-500 text-white py-2 px-4 rounded"
+                            className="bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:bg-green-600"
                         >
                             Save
                         </button>

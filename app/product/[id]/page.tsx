@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/router';
 import { useParams } from 'next/navigation';
 import { useCart } from '@/app/lib/CartContext';
 import { useEffect, useState } from 'react';
@@ -19,7 +18,6 @@ interface Product {
 }
 
 const ProductPage = () => {
-    //const router = useRouter(); // Use useRouter for accessing params
     const _id = useParams(); // Access id from router.query
     const { addToCart } = useCart();
     const [product, setProduct] = useState<Product | null>(null);
@@ -28,10 +26,7 @@ const ProductPage = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                console.log("_id : " + _id);
-                // Ensure id is a string before using it in the URL
                 const productId = window.location.pathname.split('/').pop();
-                console.log("product : " + productId);
                 const response = await fetch(`/api/books/${productId}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -58,43 +53,49 @@ const ProductPage = () => {
     const decreaseQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
     return (
-        <main className="flex min-h-screen flex-col p-6">
-            <div className="flex flex-row p-4">
-                {product && (
-                    <>
-                        <Image src={'/images' + (product.imageURL || '/No-image.jpg')} alt={product.title} width={500} height={500} />
-                        <div className="flex flex-col p-24">
-                            <h2 className="text-2xl font-bold p-4">{product.title}</h2>
-                            <p className="text-justify text-base p-4">{product.description}</p>
-                            <p className="text-lg p-4">Price: ${product.price}</p>
-                            <div className="flex items-center p-4">
-                                <label htmlFor="quantity" className="mr-4">Quantity:</label>
-                                <button
-                                    onClick={decreaseQuantity}
-                                    className="bg-gray-300 text-gray-800 py-1 px-3 rounded-l"
-                                >-</button>
-                                <input
-                                    type="number"
-                                    id="quantity"
-                                    min="1"
-                                    value={quantity}
-                                    readOnly
-                                    className="border py-1 px-4 text-center w-16"
-                                />
-                                <button
-                                    onClick={increaseQuantity}
-                                    className="bg-gray-300 text-gray-800 py-1 px-3 rounded-r"
-                                >+</button>
-                            </div>
+        <main className="min-h-screen flex flex-col p-8 bg-teal-50">
+            <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden flex flex-col lg:flex-row">
+                <div className="relative h-96 w-full lg:w-1/2">
+                    <Image
+                        src={'/images' + (product?.imageURL || '/No-image.jpg')}
+                        alt={product?.title || 'Product Image'}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (min-width: 769px) 50vw"
+                        className="object-cover rounded-t-lg lg:rounded-l-lg"
+                    />
+                </div>
+                <div className="p-6 flex flex-col justify-between lg:w-1/2">
+                    <div>
+                        <h2 className="text-4xl font-bold text-teal-900 mb-4">{product?.title}</h2>
+                        <p className="text-base text-gray-700 mb-6">{product?.description}</p>
+                        <p className="text-xl font-semibold text-yellow-600 mb-8">Price: ${product?.price.toFixed(2)}</p>
+                        <div className="flex items-center mb-8">
+                            <label htmlFor="quantity" className="mr-4 text-lg font-medium text-gray-800">Quantity:</label>
                             <button
-                                onClick={handleAddToCart}
-                                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
-                            >
-                                Add to Cart
-                            </button>
+                                onClick={decreaseQuantity}
+                                className="bg-teal-200 text-teal-800 py-2 px-4 rounded-l-lg hover:bg-teal-300 focus:outline-none focus:ring-2 focus:ring-teal-400"
+                            >-</button>
+                            <input
+                                type="number"
+                                id="quantity"
+                                min="1"
+                                value={quantity}
+                                readOnly
+                                className="border border-teal-300 py-2 px-4 text-center w-24 rounded-none"
+                            />
+                            <button
+                                onClick={increaseQuantity}
+                                className="bg-teal-200 text-teal-800 py-2 px-4 rounded-r-lg hover:bg-teal-300 focus:outline-none focus:ring-2 focus:ring-teal-400"
+                            >+</button>
                         </div>
-                    </>
-                )}
+                    </div>
+                    <button
+                        onClick={handleAddToCart}
+                        className="bg-teal-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    >
+                        Add to Cart
+                    </button>
+                </div>
             </div>
         </main>
     );

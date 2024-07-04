@@ -2,13 +2,19 @@
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-export default function Search({ placeholder }: { placeholder: string }) {
+interface SearchProps {
+  placeholder: string;
+  className?: string;  // Added className prop
+}
+
+export default function Search({ placeholder, className }: SearchProps) {
   return (
-    <div className="relative flex flex-1 flex-shrink-0">
+    <div className={`relative flex flex-1 flex-shrink-0 ${className}`}>
       <label htmlFor="search" className="sr-only">
         Search
       </label>
       <input
+        id="search"
         className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
         placeholder={placeholder}
       />

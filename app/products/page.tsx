@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import axios from 'axios';
 
-
 type PropsProducts = {
     product: ProductType;
 };
@@ -19,13 +18,6 @@ type ProductType = {
     imageURL: string;
 };
 
-// interface Product {
-//     id: string;
-//     name: string;
-//     price: number;
-//     imageUrl: string;
-// }
-
 const ProductsPage = () => {
     const [products, setProducts] = useState<ProductType[]>([]);
 
@@ -33,7 +25,7 @@ const ProductsPage = () => {
         try {
             const config = {
                 headers: {
-                'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                 },
             };
 
@@ -52,32 +44,48 @@ const ProductsPage = () => {
     }, []);
 
     return (
-        <main className="flex min-h-screen flex-col p-6">
-            <h1 className="text-3xl font-bold mb-6">Products</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <main className="min-h-screen flex flex-col p-8 bg-teal-50">
+            <h1 className="text-4xl font-extrabold text-teal-900 mb-12 text-center">Explore Our Products</h1>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {products.length > 0 ? (
-                        products.map((product) => <Product product={product} key={product._id.toString()} />)
-                    ) : (
-                        <div>Loading...</div>
-                    )}
+                    products.map((product) => (
+                        <Product product={product} key={product._id.toString()} />
+                    ))
+                ) : (
+                    <div className="col-span-3 text-center text-gray-600">Loading...</div>
+                )}
             </div>
         </main>
     );
 };
 
-
-
 const Product = ({ product }: PropsProducts) => {
     return (
-        <div key={product._id} className="p-4 border rounded shadow">
-            <Link href={`/product/${product._id}`}>
-                <Image src={'/images' + (product.imageURL || '/No-image.jpg')} alt={product.title} width={200} height={200} className="m-auto"/>
-                <h2 className="text-xl font-bold">{product.title}</h2>
-                <p className="text-lg">Price: ${product.price}</p>
-            </Link>
-        </div>
+        <Link
+            href={`/product/${product._id}`}
+            className="group relative bg-white border border-teal-200 rounded-lg shadow-md overflow-hidden flex flex-col"
+        >
+            <div className="relative h-72 w-full overflow-hidden rounded-t-lg">
+                <Image
+                    src={'/images' + (product.imageURL || '/No-image.jpg')}
+                    alt={product.title}
+                    fill
+                    className="object-cover"
+                />
+            </div>
+            <div className="flex flex-col p-6 flex-grow">
+                <h2 className="text-2xl font-bold text-teal-900 mb-2 group-hover:text-teal-700 transition-colors duration-300">{product.title}</h2>
+                <p className="text-lg text-yellow-600 font-semibold mb-2">${product.price.toFixed(2)}</p>
+                <p className="text-sm text-gray-700 mb-4">By {product.author}</p>
+                <button
+                    className="mt-auto bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    onClick={(e) => e.stopPropagation()}  // Prevent Link from triggering
+                >
+                    View Details
+                </button>
+            </div>
+        </Link>
     );
 };
-
 
 export default ProductsPage;
