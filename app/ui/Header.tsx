@@ -13,7 +13,13 @@ const Header: React.FC = () => {
 
     return (
         <header className="flex justify-between items-center py-4 px-6 bg-teal-600 text-white shadow-md">
-            <NovelNestLogo />
+            <Link
+                className="mb-2 flex h-20 items-end justify-start rounded-md bg-teal-700 p-4 md:h-40"
+                href="/"
+            >
+                <NovelNestLogo />
+            </Link>
+
             <nav>
                 <ul className="flex space-x-4">
                     <li>
