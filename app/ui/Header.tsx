@@ -37,6 +37,14 @@ const Header: React.FC = () => {
                         </Link>
                     </li>
                     <li>
+                    <form action={actions.signIn}>
+                        <button type='submit'>Sign In </button>
+                    </form>
+                    <form action={actions.signOut}>
+                        <button type='submit'>Sign Out</button>
+                    </form>
+                    </li>
+                    <li>
                         <Link href="/cart" className="relative hover:text-yellow-300 transition-colors duration-200">
                             <ShoppingCartIcon className="w-6 h-6" />
                             {cartCount > 0 && (
