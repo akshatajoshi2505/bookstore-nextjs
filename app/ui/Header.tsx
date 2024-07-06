@@ -6,10 +6,12 @@ import Link from 'next/link';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import NovelNestLogo from '@/app/ui/NovelNestLogo';
 import * as actions from '@/app/actions';
+import { useSession } from 'next-auth/react';
 
 const Header: React.FC = () => {
     const { cart } = useCart();
     const cartCount = cart.reduce((acc, item) => acc + (item.qty || 0), 0);
+    const { data: session } = useSession();
 
     return (
         <header className="flex justify-between items-center py-4 px-6 bg-teal-600 text-white shadow-md">
@@ -21,12 +23,21 @@ const Header: React.FC = () => {
             </Link>
 
             <nav>
-                <ul className="flex space-x-4">
+            if (!session || !session.user) 
+                return <ul>
+                        <li>
+                            <form action={actions.signIn}>
+                                <button type='submit'>Sign In </button>
+                            </form>
+                        </li>
+                    </ul>;
+            return <ul className="flex space-x-4">
                     <li>
                         <Link href="/" className="hover:text-yellow-300 transition-colors duration-200">
                             Home
                         </Link>
                     </li>
+                    
                     <li>
                         <Link href="/dashboard" className="hover:text-yellow-300 transition-colors duration-200">
                             Dashboard
@@ -43,12 +54,11 @@ const Header: React.FC = () => {
                         </Link>
                     </li>
                     <li>
-                    <form action={actions.signIn}>
-                        <button type='submit'>Sign In </button>
-                    </form>
+                    <li>
                     <form action={actions.signOut}>
                         <button type='submit'>Sign Out</button>
                     </form>
+                    </li>
                     </li>
                     <li>
                         <Link href="/cart" className="relative hover:text-yellow-300 transition-colors duration-200">
@@ -60,7 +70,8 @@ const Header: React.FC = () => {
                             )}
                         </Link>
                     </li>
-                </ul>
+                </ul>;
+                
             </nav>
         </header>
     );
