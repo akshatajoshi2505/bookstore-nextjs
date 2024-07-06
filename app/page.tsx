@@ -5,7 +5,7 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { lusitana } from '@/app/ui/fonts';
 import Image from 'next/image';
-
+import * as actions from '@/app/actions';
 
 const HomePage: React.FC = async () => {
   const session = await auth();
@@ -20,16 +20,10 @@ const HomePage: React.FC = async () => {
               </Link>
               . Let your next adventure begin here!
             </p>
-            <Link
-              href="/login"
-              className="flex items-center gap-5 self-start rounded-lg bg-teal-800 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-900 hover:text-yellow-300 md:text-base"
-            >
-              {session?.user ? (
-                  <><span>Log in {JSON.stringify(session.user)}</span><ArrowRightIcon className="w-5 md:w-6" /></>
-                ) : (
-                  <div>Signed Out</div>
-              )}
-            </Link>
+            
+              <form action={actions.signIn}>
+                <button type='submit' className="flex items-center gap-5 self-start rounded-lg bg-teal-800 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-900 hover:text-yellow-300 md:text-base">Sign In </button>
+              </form>
           </div>
           <div className="flex items-center justify-center p-6 md:w-3/5 md:py-12">
             <Image
