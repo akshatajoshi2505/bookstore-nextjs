@@ -13,25 +13,36 @@ const Header: React.FC = () => {
     const cartCount = cart.reduce((acc, item) => acc + (item.qty || 0), 0);
     const { data: session } = useSession();
 
-    return (
-        <header className="flex justify-between items-center py-4 px-6 bg-teal-600 text-white shadow-md">
-            <Link
-                className="mb-2 flex h-20 items-end justify-start rounded-md bg-teal-700 p-4 md:h-40"
-                href="/"
-            >
-                <NovelNestLogo />
-            </Link>
 
-            <nav>
             if (!session || !session.user) 
-                return <ul>
-                        <li>
-                            <form action={actions.signIn}>
-                                <button type='submit'>Sign In </button>
-                            </form>
-                        </li>
-                    </ul>;
-            return <ul className="flex space-x-4">
+                return (<header className="flex justify-between items-center py-4 px-6 bg-teal-600 text-white shadow-md">
+                    <Link
+                        className="mb-2 flex h-20 items-end justify-start"
+                        href="/"
+                    >
+                        <NovelNestLogo />
+                    </Link>
+                    <nav>
+                        <ul>
+                            <li>
+                                <form action={actions.signIn}>
+                                    <button type='submit'>Sign In </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </nav>
+                </header>);
+            return (
+                <header className="flex justify-between items-center py-4 px-6 bg-teal-600 text-white shadow-md">
+                <Link
+                    className="mb-2 flex h-20 items-end justify-start"
+                    href="/"
+                >
+                    <NovelNestLogo />
+                </Link>
+    
+                <nav>
+                    <ul className="flex space-x-4">
                     <li>
                         <Link href="/" className="hover:text-yellow-300 transition-colors duration-200">
                             Home
@@ -70,11 +81,9 @@ const Header: React.FC = () => {
                             )}
                         </Link>
                     </li>
-                </ul>;
-                
-            </nav>
-        </header>
-    );
+                </ul>
+                </nav>
+                </header>);
 }
 
 export default Header;
