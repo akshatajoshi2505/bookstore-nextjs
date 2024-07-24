@@ -14,21 +14,6 @@ import { RevenueChartSkeleton, LatestInvoicesSkeleton, CardsSkeleton } from '@/a
 
 export default function Page() {
   const { data: session, status } = useSession();
-
-  useEffect(() => {
-    if (status === 'loading') return; // Do nothing while loading
-    if (!session?.user) {
-      // Redirect to login if not authenticated
-      console.log("Redirecting to login because user is not authenticated."); // Debugging log
-      window.location.href = '/login';
-    }
-  }, [session, status]);
-
-  if (status === 'loading' || !session?.user) {
-    return <div>Loading...</div>; // Show a loading indicator while checking session
-  }
-
-export default function Page() {
   // const {
   //   numberOfInvoices,
   //   numberOfCustomers,
@@ -44,6 +29,15 @@ export default function Page() {
   });
   const [orders, setOrders] = useState([]);
   const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    if (status === 'loading') return; // Do nothing while loading
+    if (!session?.user) {
+      // Redirect to login if not authenticated
+      console.log("Redirecting to login because user is not authenticated."); // Debugging log
+      window.location.href = '/login';
+    }
+  }, [session, status]);
 
   useEffect(() => {
     
@@ -116,8 +110,8 @@ export default function Page() {
     fetchLatestBooks();
   }, []);
 
-
-
+  if (status === 'loading' || !session?.user)
+    return <div>Loading...</div>; // Show a loading indicator while checking session
   return (
     <main>
       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>

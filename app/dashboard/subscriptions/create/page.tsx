@@ -3,7 +3,7 @@ import Form from '@/app/ui/subscriptions/create-form';
 import Breadcrumbs from '@/app/ui/subscriptions/breadcrumbs';
 // import { fetchCustomers } from '@/app/lib/data';
  
-export default function Page() {
+export default async function Page() {
 //   const customers = await fetchCustomers();
  
   return (
