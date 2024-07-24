@@ -7,9 +7,19 @@ import { NextRequest, NextResponse } from 'next/server';
 connectDB();
 
 export async function GET(request: NextRequest) {
+    const url = new URL(request.url);
+    const id = url.pathname.split('/').pop();
     try {
         // Fetch all categories from the database
-        const categories = await Category.find({});
+
+        const countOnly = url.searchParams.get('countOnly');
+        if (countOnly === 'true') {
+            const totalCategories = await Category.countDocuments();
+            return NextResponse.json({ success: true, data: { totalCategories } });
+        }
+        //const categoriesDB = await Category.find({});
+
+       const categories = await Category.find({});
         
         return NextResponse.json({
             message: 'Categories fetched successfully',

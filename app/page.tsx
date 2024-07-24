@@ -20,17 +20,16 @@ const HomePage: React.FC = async () => {
               </Link>
               . Let your next adventure begin here!
             </p>
-            <div
+            <Link
+              href="/register"
               className="flex items-center gap-5 self-start rounded-lg bg-teal-800 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-900 hover:text-yellow-300 md:text-base"
             >
               {session?.user ? (
                   <div>Signed Out</div>
                 ) : (
-                  <form action={actions.signIn}>
-                    <button type='submit'>Sign In </button>
-                </form>
+                  <><span>RegisterHere!</span><ArrowRightIcon className="w-5 md:w-6" /></>
               )}
-            </div>
+            </Link>
           </div>
           <div className="flex items-center justify-center p-6 md:w-3/5 md:py-12">
             <Image

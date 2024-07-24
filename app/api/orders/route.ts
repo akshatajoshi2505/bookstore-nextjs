@@ -5,7 +5,14 @@ import { NextRequest, NextResponse } from 'next/server';
 connectDB();
 
 export async function GET(request: NextRequest) {
+    const url = new URL(request.url);
+    const id = url.pathname.split('/').pop();
     try {
+        const countOnly = url.searchParams.get('countOnly');
+        if (countOnly === 'true') {
+            const totalOrders = await Order.countDocuments();
+            return NextResponse.json({ success: true, data: { totalOrders } });
+        } 
         const ordersDB = await Order.find({});
         return NextResponse.json({
             message: 'Orders fetched successfully',

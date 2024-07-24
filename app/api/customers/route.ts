@@ -6,7 +6,14 @@ connectDB();
 
 
 export async function GET(request: NextRequest) {
+    const url = new URL(request.url);
+    const id = url.pathname.split('/').pop();
     try {
+        const countOnly = url.searchParams.get('countOnly');
+        if (countOnly === 'true') {
+            const totalCustomers = await Customer.countDocuments();
+            return NextResponse.json({ success: true, data: { totalCustomers } });
+        }
         const customers = await Customer.find({});
         return NextResponse.json({
             message: 'Customers fetched successfully',

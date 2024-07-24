@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 
 // Define the Subscription interface
 interface Subscription {
-  id: number;
+  _id: number;
   title: string;
   duration: number;
   amount: number;
@@ -45,14 +45,14 @@ export default function Form({ subscription }: Props) {
 
     try {
       const subscriptionData = {
-        id: subscription.id,
+        id: subscription._id,
         title,
         duration: parseInt(duration),
         amount: parseFloat(amount),
         status,
       };
       // console.log("SUBBB"+subscription._id);
-      const response = await fetch(`/api/subscriptions/${subscription.id}`, {
+      const response = await fetch(`/api/subscriptions/${subscription._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -166,8 +166,8 @@ export default function Form({ subscription }: Props) {
                   name="status"
                   type="radio"
                   value="paid"
-                  checked={status === 'paid'}
-                  onChange={() => setStatus('paid')}
+                  checked={status === 'active'}
+                  onChange={() => setStatus('active')}
                   className="h-4 w-4 cursor-pointer border-teal-300 bg-teal-100 text-teal-600 focus:ring-2"
                 />
                 <label

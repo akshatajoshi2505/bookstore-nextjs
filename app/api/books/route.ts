@@ -23,9 +23,15 @@ export async function GET(request: Request) {
         }
     } else {
         // Handle GET request for all books
+        const countOnly = url.searchParams.get('countOnly');
         try {
-            const books = await Books.find({});
-            return NextResponse.json({ success: true, data: books });
+            if (countOnly === 'true') {
+                const totalBooks = await Books.countDocuments();
+                return NextResponse.json({ success: true, data: { totalBooks } });
+            } else {
+                const books = await Books.find({});
+                return NextResponse.json({ success: true, data: books });
+            }
         } catch (error) {
             const message = error instanceof Error ? error.message : 'An unknown error occurred';
             return NextResponse.json({ success: false, message }, { status: 500 });

@@ -120,8 +120,8 @@ export default function CreateSubscriptionForm() {
                   name="status"
                   type="radio"
                   value="paid"
-                  checked={status === 'paid'}
-                  onChange={() => setStatus('paid')}
+                  checked={status === 'active'}
+                  onChange={() => setStatus('active')}
                   className="h-4 w-4 text-green-600 border-gray-300 focus:ring-green-500"
                 />
                 <label htmlFor="statusPaid" className="ml-2 text-sm text-gray-600 flex items-center gap-1.5 bg-green-100 rounded-lg px-3 py-1.5">
