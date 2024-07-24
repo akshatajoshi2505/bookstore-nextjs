@@ -20,10 +20,17 @@ const HomePage: React.FC = async () => {
               </Link>
               . Let your next adventure begin here!
             </p>
-            
-              <form action={actions.signIn}>
-                <button type='submit' className="flex items-center gap-5 self-start rounded-lg bg-teal-800 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-900 hover:text-yellow-300 md:text-base">Sign In </button>
-              </form>
+            <div
+              className="flex items-center gap-5 self-start rounded-lg bg-teal-800 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-900 hover:text-yellow-300 md:text-base"
+            >
+              {session?.user ? (
+                  <div>Signed Out</div>
+                ) : (
+                  <form action={actions.signIn}>
+                    <button type='submit'>Sign In </button>
+                </form>
+              )}
+            </div>
           </div>
           <div className="flex items-center justify-center p-6 md:w-3/5 md:py-12">
             <Image

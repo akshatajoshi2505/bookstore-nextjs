@@ -65,6 +65,11 @@ const Header: React.FC = () => {
                         </Link>
                     </li>
                     <li>
+                        <Link href="/category" className="hover:text-yellow-300 transition-colors duration-200">
+                            Categories
+                        </Link>
+                    </li>
+                    <li>
                     <li>
                     <form action={actions.signOut}>
                         <button type='submit'>Sign Out</button>

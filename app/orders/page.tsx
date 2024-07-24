@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react'; 
+
 
 type PropsOrders = {
     order: OrderType;
@@ -18,8 +20,16 @@ type OrderType = {
 };
 
 const Orders = () => {
+    const { data: session, status } = useSession(); 
     const [orders, setOrders] = useState<OrderType[]>([]);
-
+    useEffect(() => {
+        if (status === 'loading') return; // Do nothing while loading
+        if (!session?.user) {
+            // Redirect to login if not authenticated
+            console.log("Redirecting to login because user is not authenticated."); // Debugging log
+            window.location.href = '/login';
+        }
+    }, [session, status]);
     const sendGetRequest = async () => {
         try {
             const config = {

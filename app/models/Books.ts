@@ -7,7 +7,8 @@ interface IBook extends Document {
     price: number;
     publicationDate: Date;
     isbn: string;
-    imageURL: string; // Added imageURL field
+    imageURL: string;
+    category: mongoose.Types.ObjectId; // Add category field
 }
 
 const BookSchema: Schema = new Schema({
@@ -17,7 +18,8 @@ const BookSchema: Schema = new Schema({
     price: { type: Number, required: true },
     publicationDate: { type: Date, required: true },
     isbn: { type: String, required: true },
-    imageURL: { type: String, required: false }, // Define the imageURL field
+    imageURL: { type: String, required: false },
+    category: { type: mongoose.Types.ObjectId, ref: 'Category', required: true }, // Define the category field
 });
 
 const Books: Model<IBook> = mongoose.models.Books || mongoose.model<IBook>('Books', BookSchema);

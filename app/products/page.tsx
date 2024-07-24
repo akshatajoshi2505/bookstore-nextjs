@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import axios from 'axios';
-
+import { useSession } from 'next-auth/react';
+import * as actions from '@/app/actions';
 type PropsProducts = {
     product: ProductType;
 };
@@ -19,7 +20,17 @@ type ProductType = {
 };
 
 const ProductsPage = () => {
+    const { data: session, status } = useSession(); // Use useSession
+
     const [products, setProducts] = useState<ProductType[]>([]);
+    useEffect(() => {
+        if (status === 'loading') return; // Do nothing while loading
+        if (!session?.user) {
+            // Redirect to login if not authenticated
+            console.log("Redirecting to login because user is not authenticated."); // Debugging log
+            window.location.href = '/login';
+        }
+    }, [session, status]);
 
     const sendGetRequest = async () => {
         try {

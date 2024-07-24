@@ -1,10 +1,6 @@
-import Pagination from '@/app/ui/invoices/pagination';
 import Search from '@/app/ui/search';
-import Table from '@/app/ui/invoices/table';
 import { CreateCategory } from '@/app/ui/categories/buttons';
 import { lusitana } from '@/app/ui/fonts';
-import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
-import { Suspense } from 'react';
 import CategoriesTable from '@/app/ui/categories/table';
 
 export default async function Page() {
@@ -22,7 +18,6 @@ export default async function Page() {
             </svg>
           </span>
         </div>
-        <CreateCategory />
       </div>
       <CategoriesTable></CategoriesTable>
       <div className="mt-5 flex w-full justify-center">

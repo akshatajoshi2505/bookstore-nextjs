@@ -1,12 +1,24 @@
 'use client';
-
+import { useEffect } from 'react';
 import { useCart } from '@/app/lib/CartContext';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
 const CartPage = () => {
+    const { data: session, status } = useSession(); // Use useSession
+
     const { cart, updateQty, removeFromCart } = useCart();
     const router = useRouter();
+    useEffect(() => {
+        if (status === 'loading') return; // Do nothing while loading
+        if (!session?.user) {
+            // Redirect to login if not authenticated
+            console.log("Redirecting to login because user is not authenticated."); // Debugging log
+            router.push('/login');
+        }
+    }, [session, status, router]);
+
 
     const calculateTotalPrice = () => {
         return cart.reduce((total, product) => total + (product.price * (product.qty || 1)), 0);

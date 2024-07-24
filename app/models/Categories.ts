@@ -1,15 +1,15 @@
-// models/Category.js
-import mongoose from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
-const categorySchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  books: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Book'  // Assuming you have a Book model
-  }]
+export interface ICategory extends Document {
+    _id: string;
+    name: string;
+    books: mongoose.Types.ObjectId[]; // Array of book ISBNs as strings
+}
+
+
+const CategorySchema: Schema = new Schema({
+    name: { type: String, required: true },
+    books: [{ type: mongoose.Types.ObjectId, ref: 'Books' }], // Reference to Books model
 });
 
-export default mongoose.models.Category || mongoose.model('Category', categorySchema);
+export default mongoose.models.Category || mongoose.model<ICategory>('Category', CategorySchema);

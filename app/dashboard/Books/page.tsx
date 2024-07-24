@@ -4,7 +4,7 @@ import { useState, useEffect, ReactNode } from 'react';
 
 // Book interface
 interface Book {
-     _id?: string; // MongoDB assigns an _id field by default
+    _id?: string; // MongoDB assigns an _id field by default
     title: string;
     author: string;
     description: string;
@@ -12,6 +12,13 @@ interface Book {
     publicationDate: string;
     isbn: string;
     imageURL: string;
+    category: string; // Add category field
+}
+
+// Category interface
+interface Category {
+    _id: string;
+    name: string;
 }
 
 // Modal component props interface
@@ -43,12 +50,14 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 // AdminPage component
 const AdminPage = () => {
     const [books, setBooks] = useState<Book[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [editingBook, setEditingBook] = useState<Book | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [isBookModalOpen, setIsBookModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         fetchBooks();
+        fetchCategories();
     }, []);
 
     const fetchBooks = async () => {
@@ -61,6 +70,22 @@ const AdminPage = () => {
             setBooks(data.data);
         } catch (error) {
             console.error('Error fetching books:', error);
+        }
+    };
+
+    const fetchCategories = async () => {
+        try {
+            const res = await fetch('/api/categories');
+            const data = await res.json();
+            if (data.success && Array.isArray(data.categories)) {
+                setCategories(data.categories);
+            } else {
+                console.error('Failed to load categories:', data.message);
+                setCategories([]);
+            }
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+            setCategories([]);
         }
     };
 
@@ -87,6 +112,7 @@ const AdminPage = () => {
             publicationDate: "",
             isbn: "",
             imageURL: "",
+            category: "", // Initialize category field
         });
         setIsBookModalOpen(true);
     };
@@ -105,6 +131,7 @@ const AdminPage = () => {
                     body: JSON.stringify(editingBook),
                 });
                 fetchBooks();
+                fetchCategories();
                 setEditingBook(null);
                 setIsBookModalOpen(false);
             } catch (error) {
@@ -113,7 +140,7 @@ const AdminPage = () => {
         }
     };
 
-    const handleChangeBook = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChangeBook = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         if (editingBook) {
             setEditingBook({ ...editingBook, [name]: value });
@@ -159,6 +186,7 @@ const AdminPage = () => {
                             <th className="border px-4 py-2 text-left text-teal-800">Price</th>
                             <th className="border px-4 py-2 text-left text-teal-800">Publication Date</th>
                             <th className="border px-4 py-2 text-left text-teal-800">ISBN</th>
+                            <th className="border px-4 py-2 text-left text-teal-800">Category</th>
                             <th className="border px-4 py-2 text-left text-teal-800">Actions</th>
                         </tr>
                     </thead>
@@ -170,6 +198,7 @@ const AdminPage = () => {
                                 <td className="border px-4 py-2">${book.price}</td>
                                 <td className="border px-4 py-2">{book.publicationDate}</td>
                                 <td className="border px-4 py-2">{book.isbn}</td>
+                                <td className="border px-4 py-2">{categories.find(category => category._id === book.category)?.name || 'Unknown'}</td>
                                 <td className="border px-4 py-2">
                                     <button
                                         onClick={() => handleEditBook(book)}
@@ -205,7 +234,7 @@ const AdminPage = () => {
                                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                             />
                         </div>
-                         <div className="mb-4">
+                        <div className="mb-4">
                             <label className="block text-teal-700 mb-2">Description</label>
                             <textarea
                                 name="description"
@@ -253,6 +282,20 @@ const AdminPage = () => {
                                 onChange={handleChangeBook}
                                 className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                             />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-teal-700 mb-2">Category</label>
+                            <select
+                                name="category"
+                                value={editingBook.category}
+                                onChange={handleChangeBook}
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                            >
+                                <option value="">Select Category</option>
+                                {categories.map(category => (
+                                    <option key={category._id} value={category._id}>{category.name}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className="mb-4">
                             <label className="block text-teal-700 mb-2">Upload Image</label>

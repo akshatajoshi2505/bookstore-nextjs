@@ -1,8 +1,8 @@
 import { connectDB } from '../../../lib/dbConnect';
-import Books,{ IBook } from '../../../models/Books';
+import Books, { IBook } from '../../../models/Books';
+import Categories, { ICategory } from '../../../models/Categories';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
-
 
 // Ensure the database connection is established
 connectDB();
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
     if (id) {
         try {
-            const book = await Books.findById(id);
+            const book = await Books.findById(id).populate('category'); // Populate category
             if (!book) {
                 return NextResponse.json({ success: false, message: 'Book not found' }, { status: 404 });
             }
@@ -23,7 +23,32 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ success: false, message }, { status: 500 });
         }
     } else {
-        return NextResponse.json({ success: false, message: 'Book ID not provided' }, { status: 400 });
+        try {
+            const books = await Books.find({}).populate('category'); // Populate categories for all books
+            return NextResponse.json({ success: true, data: books });
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'An unknown error occurred';
+            return NextResponse.json({ success: false, message }, { status: 500 });
+        }
+    }
+}
+
+export async function POST(request: NextRequest) {
+    try {
+        const book: IBook = await request.json();
+        const newBook = await Books.create(book);
+        // Update category to include this book
+        if (book.category) {
+            await Categories.findByIdAndUpdate(
+                book.category,
+                { $push: { books: newBook._id } },
+                { new: true, useFindAndModify: false }
+            );
+        }
+        return NextResponse.json({ success: true, data: newBook }, { status: 201 });
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'An unknown error occurred';
+        return NextResponse.json({ success: false, message }, { status: 500 });
     }
 }
 
@@ -36,26 +61,16 @@ export async function PUT(request: NextRequest) {
     }
 
     try {
-        const bookData = await request.formData();
-        const updatedBook = {
-            title: bookData.get('title'),
-            description: bookData.get('description'),
-            author: bookData.get('author'),
-            price: bookData.get('price'),
-            publicationDate: bookData.get('publicationDate'),
-            isbn: bookData.get('isbn'),
-            imageURL: bookData.get('imageURL') ? `/images/${bookData.get('imageURL')}` : undefined,
-        };
-    
-        const book = await Books.findByIdAndUpdate(id, updatedBook, { new: true, runValidators: true });
-        if (!book) {
-          return NextResponse.json({ success: false, message: 'Book not found' }, { status: 404 });
+        const bookData = await request.json();
+        const updatedBook = await Books.findByIdAndUpdate(id, bookData, { new: true, runValidators: true });
+        if (!updatedBook) {
+            return NextResponse.json({ success: false, message: 'Book not found' }, { status: 404 });
         }
-        return NextResponse.json({ success: true, data: book });
-      } catch (error) {
+        return NextResponse.json({ success: true, data: updatedBook });
+    } catch (error) {
         const message = error instanceof Error ? error.message : 'An unknown error occurred';
         return NextResponse.json({ success: false, message }, { status: 500 });
-      }
+    }
 }
 
 export async function DELETE(request: NextRequest) {
